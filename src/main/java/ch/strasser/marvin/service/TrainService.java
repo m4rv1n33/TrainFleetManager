@@ -17,6 +17,12 @@ public class TrainService {
     }
 
     public Train create(Train train) {
+        if (train.getVehicleNumber() == null) {
+            throw new IllegalArgumentException("vehicleNumber is required");
+        }
+        if (repository.existsByVehicleNumber(train.getVehicleNumber())) {
+            throw new RuntimeException("vehicleNumber must be unique");
+        }
         return repository.save(train);
     }
 

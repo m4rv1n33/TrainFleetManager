@@ -12,6 +12,9 @@ import java.util.List;
 
 /**
  * Logic for assignments
+ * @author Marvin Strasser
+ * @version 1.0
+ * @since 19/01/2026
  */
 @RestController
 @RequestMapping("/assignments")

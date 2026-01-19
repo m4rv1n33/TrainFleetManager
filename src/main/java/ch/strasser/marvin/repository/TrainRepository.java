@@ -7,4 +7,5 @@ import java.util.Optional;
 
 public interface TrainRepository extends JpaRepository<Train, Long> {
     Optional<Train> findByVehicleNumber(String vehicleNumber);
+    boolean existsByVehicleNumber(String vehicleNumber);
 }

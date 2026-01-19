@@ -19,7 +19,7 @@ public class Train {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
+    @Column(unique = true, nullable = false)
     private String vehicleNumber; // Ex. 511-001
     private int maxSpeed;
     private int length;
