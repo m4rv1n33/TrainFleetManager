@@ -30,7 +30,7 @@ public class Train {
 
     @OneToOne(mappedBy = "train")
     @JsonManagedReference
-    private TrainAssignment currentAssign   ment;
+    private TrainAssignment currentAssignment;
 
     // Getters & Setters
     public Long getId() { return id; }
