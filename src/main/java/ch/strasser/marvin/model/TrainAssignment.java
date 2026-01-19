@@ -3,7 +3,15 @@ package ch.strasser.marvin.model;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import java.time.LocalDate;
-
+ /**
+ * <p>
+ * Used to link vehicles to services OR maintenance
+ * </p>
+ *
+ * @author Marvin Strasser
+ * @version 1.0
+ * @since 19/01/2026
+ */
 @Entity
 @Table(name = "TrainAssignment")
 public class TrainAssignment {

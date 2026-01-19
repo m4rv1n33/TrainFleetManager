@@ -4,6 +4,9 @@ TrainFleetManager
 12/01/2026
 */
 
+/**
+ * enum for train status
+ */
 public enum AssignmentStatus{
     PLANNED,
     ACTIVE,

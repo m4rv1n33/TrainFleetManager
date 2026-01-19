@@ -1,5 +1,13 @@
 package ch.strasser.marvin.dto;
-
+/**
+ * <p>
+ * TrainStatus Data Transfer Object
+ * </p>
+ *
+ * @author Marvin Strasser
+ * @version 1.0
+ * @since 19/01/2026
+ */
 public class TrainStatusDto {
 
     private String vehicleNumber;

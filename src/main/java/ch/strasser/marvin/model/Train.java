@@ -2,6 +2,15 @@ package ch.strasser.marvin.model;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
+/**
+ * <p>
+ * Used to initate train objects, contains a technical id as well as a real life-like vehicleNumber.
+ * </p>
+ *
+ * @author Marvin Strasser
+ * @version 1.0
+ * @since 19/01/2026
+ */
 
 @Entity
 @Table(name = "Train")

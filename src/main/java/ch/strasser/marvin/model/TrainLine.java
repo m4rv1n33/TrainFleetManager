@@ -1,7 +1,15 @@
 package ch.strasser.marvin.model;
 
 import jakarta.persistence.*;
-
+/**
+ * <p>
+ * Contains id, name as well as start and endStation. Used to define a train line, ex. IR36 or IC5.
+ * </p>
+ *
+ * @author Marvin Strasser
+ * @version 1.0
+ * @since 19/01/2026
+ */
 @Entity
 @Table(name = "TrainLine")
 public class TrainLine {

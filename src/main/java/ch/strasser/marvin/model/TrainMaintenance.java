@@ -7,7 +7,15 @@ TrainFleetManager
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
-
+/**
+ * <p>
+ * Contains id, start and endDate as well as a short description for maintenance.
+ * </p>
+ *
+ * @author Marvin Strasser
+ * @version 1.0
+ * @since 19/01/2026
+ */
 @Entity
 @Table(name = "TrainMaintenance")
 public class TrainMaintenance {
