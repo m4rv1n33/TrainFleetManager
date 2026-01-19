@@ -12,6 +12,9 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
+/**
+ * Business logic for train assignments.
+ */
 @Service
 public class TrainAssignmentService {
 
@@ -19,43 +22,30 @@ public class TrainAssignmentService {
     private final TrainService trainService;
     private final TrainLineService lineService;
 
-    public TrainAssignmentService(
-            TrainAssignmentRepository repository,
-            TrainService trainService,
-            TrainLineService lineService
-    ) {
+    public TrainAssignmentService(TrainAssignmentRepository repository,
+                                  TrainService trainService,
+                                  TrainLineService lineService) {
         this.repository = repository;
         this.trainService = trainService;
         this.lineService = lineService;
     }
 
+    /** Create an assignment. */
     public TrainAssignment create(TrainAssignment assignment) {
         if (assignment == null ||
                 assignment.getTrain() == null ||
                 assignment.getTrain().getVehicleNumber() == null ||
                 assignment.getLine() == null ||
-                assignment.getLine().getId() == null) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Train vehicleNumber and line id are required");
+                assignment.getLine().getId() == null ||
+                assignment.getStatus() == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Train vehicleNumber, line id, and status are required");
         }
 
-        Train train;
-        TrainLine line;
-        try {
-            train = trainService.findByNumber(assignment.getTrain().getVehicleNumber());
-        } catch (RuntimeException ex) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, ex.getMessage());
-        }
-        try {
-            line = lineService.findById(assignment.getLine().getId());
-        } catch (RuntimeException ex) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, ex.getMessage());
-        }
+        Train train = fetchTrain(assignment.getTrain().getVehicleNumber());
+        TrainLine line = fetchLine(assignment.getLine().getId());
 
-        if (assignment.getStatus() == AssignmentStatus.ACTIVE && train.getStatus() != TrainStatus.IN_SERVICE) {
-            throw new ResponseStatusException(
-                    HttpStatus.BAD_REQUEST,
-                    "Train must be IN_SERVICE for ACTIVE assignment"
-            );
+        if (assignment.getStatus() == AssignmentStatus.ACTIVE) {
+            validateActive(train, null);
         }
 
         assignment.setTrain(train);
@@ -63,25 +53,66 @@ public class TrainAssignmentService {
         return repository.save(assignment);
     }
 
-    public List<TrainAssignment> findAll() {
-        return repository.findAll();
+    /** Update assignment status. */
+    public TrainAssignment updateStatus(Long id, AssignmentStatus newStatus) {
+        TrainAssignment existing = repository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Assignment not found"));
+
+        if (newStatus == AssignmentStatus.ACTIVE) {
+            validateActive(existing.getTrain(), existing);
+        }
+
+        existing.setStatus(newStatus);
+        return repository.save(existing);
     }
 
-    public List<TrainAssignment> findByTrain(Train train) {
-        return repository.findByTrain(train);
-    }
-
-    public List<TrainAssignment> findByLine(TrainLine line) {
-        return repository.findByLine(line);
-    }
-    /**
-     * Deletes assignment by id
-     * @param id
-     */
+    /** Delete assignment by id. */
     public void delete(Long id) {
         if (!repository.existsById(id)) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Assignment not found");
         }
         repository.deleteById(id);
+    }
+
+    /** Find all assignments. */
+    public List<TrainAssignment> findAll() {
+        return repository.findAll();
+    }
+
+    /** Find assignments by train. */
+    public List<TrainAssignment> findByTrain(Train train) {
+        return repository.findByTrain(train);
+    }
+
+    /** Find assignments by line. */
+    public List<TrainAssignment> findByLine(TrainLine line) {
+        return repository.findByLine(line);
+    }
+
+    private Train fetchTrain(String vehicleNumber) {
+        try {
+            return trainService.findByNumber(vehicleNumber);
+        } catch (RuntimeException ex) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, ex.getMessage());
+        }
+    }
+
+    private TrainLine fetchLine(Long id) {
+        try {
+            return lineService.findById(id);
+        } catch (RuntimeException ex) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, ex.getMessage());
+        }
+    }
+
+    private void validateActive(Train train, TrainAssignment current) {
+        if (train.getStatus() != TrainStatus.IN_SERVICE) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Train must be IN_SERVICE for ACTIVE assignment");
+        }
+        boolean hasActive = repository.existsByTrainAndStatus(train, AssignmentStatus.ACTIVE);
+        boolean currentIsActive = current != null && current.getStatus() == AssignmentStatus.ACTIVE;
+        if (hasActive && !currentIsActive) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Train already has an ACTIVE assignment");
+        }
     }
 }
