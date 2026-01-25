@@ -22,7 +22,7 @@ public class TrainLine {
     private String startStation;
     private String endStation;
 
-    // Getters & Setters
+  
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
