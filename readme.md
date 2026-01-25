@@ -66,7 +66,7 @@ Als Disponent bei der Instandhaltung möchte ich einen Zug in Wartung setzen kö
 
 ## 3. Klassendiagramm
 
-*(Diagramm wird hier eingefügt)*
+![Screenshot1](src/main/resources/static/class_diagramm.png)
 
 ---
 
@@ -153,3 +153,4 @@ Alle definierten Testfälle wurden manuell mit Postman durchgeführt.
    ```bash
    mvn spring-boot:run
 5. API ist unter http://localhost:8080 erreichbar
+
