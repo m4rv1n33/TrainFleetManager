@@ -1,8 +1,8 @@
 # Projektdokumentation  
 ## Train Fleet Manager  
-**Modul:** M295 - Backend mit Spring Boot  
+**Modul:** M295
 **Name:** Marvin Strasser  
-**Datum:** Januar 2026  
+**Datum:** 25 Januar 2026  
 
 ---
 
@@ -14,13 +14,10 @@
    2.2 Akzeptanzkriterien  
 3. Klassendiagramm  
 4. Storyboard der Applikation  
-5. Screen Mockups  
-6. REST-Schnittstellen (Überblick)  
-7. Testplan (manuelles Testen)  
-8. Testergebnisse  
-9. Installationsanleitung  
-10. Hilfestellungen  
-
+5. REST-Schnittstellen (Überblick)  
+6. Testplan (manuelles Testen)  
+7. Testergebnisse  
+8. Installationsanleitung  
 ---
 
 ## 1. Projektidee
@@ -82,20 +79,7 @@ Dieses Storyboard bildet den zentralen Ablauf der Applikation ab.
 
 ---
 
-## 5. Screen Mockups
-
-Da es sich um eine reine Backend-Applikation handelt, werden keine grafischen Benutzeroberflächen implementiert.  
-Die Interaktion erfolgt über HTTP-Requests (z. B. via Postman).
-
-Mockups bestehen aus:
-- Beispiel-JSON-Requests
-- Beispiel-JSON-Responses
-
-Diese verdeutlichen den Aufbau der Schnittstellen und die geplante Nutzung der API.
-
----
-
-## 6. REST-Schnittstellen (Überblick)
+## 5. REST-Schnittstellen (Überblick)
 
 ### Train
 - `POST /trains`
@@ -119,7 +103,7 @@ Diese verdeutlichen den Aufbau der Schnittstellen und die geplante Nutzung der A
 
 ---
 
-## 7. Testplan
+## 6. Testplan
 
 | Nr. | Testfall | Beschreibung | Erwartetes Resultat |
 |---|---|---|---|
@@ -131,7 +115,7 @@ Diese verdeutlichen den Aufbau der Schnittstellen und die geplante Nutzung der A
 
 ---
 
-## 8. Testergebnisse
+## 7. Testergebnisse
 
 Alle definierten Testfälle wurden manuell mit Postman durchgeführt.
 
@@ -141,7 +125,7 @@ Alle definierten Testfälle wurden manuell mit Postman durchgeführt.
 
 ---
 
-## 9. Installationsanleitung
+## 8. Installationsanleitung
 
 1. MySQL-Datenbank erstellen
 2. Datenbank-Zugangsdaten in  
@@ -153,4 +137,5 @@ Alle definierten Testfälle wurden manuell mit Postman durchgeführt.
    ```bash
    mvn spring-boot:run
 5. API ist unter http://localhost:8080 erreichbar
+
 
