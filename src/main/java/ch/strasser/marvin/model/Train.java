@@ -1,7 +1,16 @@
 package ch.strasser.marvin.model;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import jakarta.persistence.*;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
 /**
  * <p>
  * Used to initate train objects, contains a technical id as well as a real life-like vehicleNumber.
@@ -16,6 +25,9 @@ import jakarta.persistence.*;
 @Table(name = "Train")
 public class Train {
 
+    public Train() {
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -29,7 +41,7 @@ public class Train {
     private TrainStatus status = TrainStatus.IN_SERVICE;
 
     @OneToOne(mappedBy = "train")
-    @JsonManagedReference
+    @JsonIgnoreProperties(value = {"train"}, allowSetters = true)
     private TrainAssignment currentAssignment;
 
     // Getters & Setters

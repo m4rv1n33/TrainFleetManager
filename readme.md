@@ -127,15 +127,34 @@ Alle definierten Testfälle wurden manuell mit Postman durchgeführt.
 
 ## 8. Installationsanleitung
 
+### Backend (Spring Boot)
 1. MySQL-Datenbank erstellen
-2. Datenbank-Zugangsdaten in  
-   `src/main/resources/application.properties` konfigurieren
-3. Projekt bauen:
+2. Zugangsdaten in `src/main/resources/application.properties` setzen
+3. Build & Start
    ```bash
    mvn clean package
-4. Projekt starten:
-   ```bash
    mvn spring-boot:run
-5. API ist unter http://localhost:8080 erreichbar
+   ```
+4. API: http://localhost:8080
+
+### Frontend (Vite + React)
+1. In das Frontend wechseln
+   ```bash
+   cd frontend
+   ```
+2. Abhängigkeiten installieren
+   ```bash
+   npm install
+   ```
+3. Dev-Server starten (nutzt Proxy auf Backend `http://localhost:8080`)
+   ```bash
+   npm run dev
+   ```
+   Läuft standardmässig auf http://localhost:5173.
+4. Build für Produktion
+   ```bash
+   npm run build
+   ```
+   Optional: `VITE_API_BASE` setzen, falls das Backend nicht unter `http://localhost:8080` läuft.
 
 

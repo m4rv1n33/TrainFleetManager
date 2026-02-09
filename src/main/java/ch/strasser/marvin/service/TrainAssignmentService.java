@@ -1,16 +1,18 @@
 package ch.strasser.marvin.service;
 
+import java.util.List;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
+
+import ch.strasser.marvin.dto.AssignmentDto;
 import ch.strasser.marvin.model.AssignmentStatus;
 import ch.strasser.marvin.model.Train;
 import ch.strasser.marvin.model.TrainAssignment;
 import ch.strasser.marvin.model.TrainLine;
 import ch.strasser.marvin.model.TrainStatus;
 import ch.strasser.marvin.repository.TrainAssignmentRepository;
-import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
-
-import java.util.List;
 
 /**
  * Business logic for train assignments.
@@ -75,18 +77,32 @@ public class TrainAssignmentService {
     }
 
     /** Find all assignments. */
-    public List<TrainAssignment> findAll() {
-        return repository.findAll();
+    public List<AssignmentDto> findAll() {
+        return repository.findAllWithTrainAndLine().stream().map(this::toDto).toList();
     }
 
     /** Find assignments by train. */
-    public List<TrainAssignment> findByTrain(Train train) {
-        return repository.findByTrain(train);
+    public List<AssignmentDto> findByTrain(Train train) {
+        return repository.findByTrain(train).stream().map(this::toDto).toList();
     }
 
     /** Find assignments by line. */
-    public List<TrainAssignment> findByLine(TrainLine line) {
-        return repository.findByLine(line);
+    public List<AssignmentDto> findByLine(TrainLine line) {
+        return repository.findByLine(line).stream().map(this::toDto).toList();
+    }
+
+    private AssignmentDto toDto(TrainAssignment assignment) {
+        String vehicle = assignment.getTrain() != null ? assignment.getTrain().getVehicleNumber() : null;
+        String lineName = assignment.getLine() != null ? assignment.getLine().getName() : null;
+        return new AssignmentDto(
+                assignment.getId(),
+                assignment.getDate(),
+                assignment.getStatus(),
+                vehicle,
+                lineName,
+                assignment.getTrain(),
+                assignment.getLine()
+        );
     }
 
     private Train fetchTrain(String vehicleNumber) {
@@ -106,6 +122,12 @@ public class TrainAssignmentService {
     }
 
     private void validateActive(Train train, TrainAssignment current) {
+        if (train.getStatus() == TrainStatus.MAINTENANCE) {
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST,
+                    "This vehicle is undergoing maintenance and does not have a definitive time or date when it is ready to be used again"
+            );
+        }
         if (train.getStatus() != TrainStatus.IN_SERVICE) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Train must be IN_SERVICE for ACTIVE assignment");
         }

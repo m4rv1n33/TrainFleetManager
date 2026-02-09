@@ -1,5 +1,17 @@
 package ch.strasser.marvin.controller;
 
+import java.util.List;
+
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import ch.strasser.marvin.dto.AssignmentDto;
 import ch.strasser.marvin.model.AssignmentStatus;
 import ch.strasser.marvin.model.Train;
 import ch.strasser.marvin.model.TrainAssignment;
@@ -7,8 +19,6 @@ import ch.strasser.marvin.model.TrainLine;
 import ch.strasser.marvin.service.TrainAssignmentService;
 import ch.strasser.marvin.service.TrainLineService;
 import ch.strasser.marvin.service.TrainService;
-import org.springframework.web.bind.annotation.*;
-import java.util.List;
 
 /**
  * Logic for assignments
@@ -40,20 +50,20 @@ public class TrainAssignmentController {
 
     /** Get all assignments */
     @GetMapping
-    public List<TrainAssignment> getAll() {
+    public List<AssignmentDto> getAll() {
         return assignmentService.findAll();
     }
 
     /** Get assignments by train */
     @GetMapping("/train/{vehicleNumber}")
-    public List<TrainAssignment> getByTrain(@PathVariable String vehicleNumber) {
+    public List<AssignmentDto> getByTrain(@PathVariable String vehicleNumber) {
         Train train = trainService.findByNumber(vehicleNumber);
         return assignmentService.findByTrain(train);
     }
 
     /** Get assignments by line */
     @GetMapping("/line/{lineId}")
-    public List<TrainAssignment> getByLine(@PathVariable Long lineId) {
+    public List<AssignmentDto> getByLine(@PathVariable Long lineId) {
         TrainLine line = lineService.findById(lineId);
         return assignmentService.findByLine(line);
     }

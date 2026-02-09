@@ -1,12 +1,22 @@
 package ch.strasser.marvin.controller;
 
+import java.util.List;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
+
 import ch.strasser.marvin.dto.TrainStatusDto;
 import ch.strasser.marvin.dto.TrainStatusUpdateRequest;
 import ch.strasser.marvin.model.Train;
-import ch.strasser.marvin.model.TrainStatus;
 import ch.strasser.marvin.service.TrainService;
-import org.springframework.web.bind.annotation.*;
-import java.util.List;
 
 /**
  * <p>
@@ -42,7 +52,7 @@ public class TrainController {
      * @param vehicleNumber
      * @return
      */
-    @GetMapping("/number/{vehicleNumber}")
+    @GetMapping(value = "/number/{vehicleNumber}", produces = "application/json")
     public Train getByNumber(@PathVariable String vehicleNumber) {
         return service.findByNumber(vehicleNumber);
     }
@@ -52,7 +62,7 @@ public class TrainController {
      * @param vehicleNumber
      * @return
      */
-    @GetMapping("/number/{vehicleNumber}/status")
+    @GetMapping(value = "/number/{vehicleNumber}/status", produces = "application/json")
     public TrainStatusDto getStatus(@PathVariable String vehicleNumber) {
         return service.getStatusWithLine(vehicleNumber);
     }
@@ -61,7 +71,7 @@ public class TrainController {
      * Gets all info about all trains
      * @return
      */
-    @GetMapping
+    @GetMapping(produces = "application/json")
     public List<Train> getAll() {
         return service.findAll();
     }
@@ -72,11 +82,20 @@ public class TrainController {
      * @param request
      * @return
      */
-    @PutMapping("/number/{vehicleNumber}/status")
+    @PutMapping(value = "/number/{vehicleNumber}/status", consumes = "application/json", produces = "application/json")
     public Train updateStatus(
             @PathVariable String vehicleNumber,
             @RequestBody TrainStatusUpdateRequest request
     ) {
         return service.updateStatus(vehicleNumber, request.getStatus());
+    }
+
+    /**
+     * Delete a train by vehicleNumber. Blocks deletion if the train has an ACTIVE assignment.
+     */
+    @DeleteMapping(value = "/number/{vehicleNumber}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void delete(@PathVariable String vehicleNumber) {
+        service.deleteByNumber(vehicleNumber);
     }
 }
