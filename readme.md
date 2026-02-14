@@ -1,8 +1,8 @@
 # Projektdokumentation  
 ## Train Fleet Manager  
-**Modul:** M295\
+**Modul:** M294/M295\
 **Name:** Marvin Strasser  
-**Datum:** 25 Januar 2026  
+**Datum:** 14 Februar 2026  
 
 ---
 
@@ -128,16 +128,14 @@ Alle definierten Testfälle wurden manuell mit Postman durchgeführt.
 ## 8. Installationsanleitung
 
 ### Backend (Spring Boot)
-1. MySQL-Datenbank erstellen
-2. Zugangsdaten in `src/main/resources/application.properties` setzen
-3. Build & Start
+!!!Port 3306 muss zwingend frei sein!!!
+1. Build & Start
    ```bash
-   mvn clean package
-   mvn spring-boot:run
+   docker compose up -d
    ```
-4. API: http://localhost:8080
+2. API: http://localhost:8080
 
-### Frontend (Vite + React)
+### Frontend
 1. In das Frontend wechseln
    ```bash
    cd frontend
@@ -151,10 +149,4 @@ Alle definierten Testfälle wurden manuell mit Postman durchgeführt.
    npm run dev
    ```
    Läuft standardmässig auf http://localhost:5173.
-4. Build für Produktion
-   ```bash
-   npm run build
-   ```
-   Optional: `VITE_API_BASE` setzen, falls das Backend nicht unter `http://localhost:8080` läuft.
-
 
