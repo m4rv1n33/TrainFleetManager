@@ -149,4 +149,10 @@ Alle definierten Testfälle wurden manuell mit Postman durchgeführt.
    npm run dev
    ```
    Läuft standardmässig auf http://localhost:5173.
+4. Testing
+   ```bash
+   npm install (In ./frontend/)
+   npm test
+   ```
+
 
